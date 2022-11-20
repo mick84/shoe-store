@@ -3,12 +3,22 @@ import { ProductLayout } from "../../components/layouts";
 import { CTX } from "../../App";
 import { useContext } from "react";
 import { PRODUCT, SERVER } from "../../utils/actions";
+import { deleteProduct } from "../../utils/requests";
 export default function Product({ id, brand, model, sizes, image, price }) {
   const goto = useNavigate();
   const { dispatch } = useContext(CTX);
+  async function handleDeletion(index) {
+    try {
+      dispatch({ type: SERVER.LOADING });
+      await deleteProduct(index);
+      dispatch({ type: PRODUCT.DELETE, payload: index });
+    } catch (error) {
+      dispatch({ type: SERVER.ERROR, payload: error });
+    }
+  }
   return (
     <ProductLayout imageUrl={image}>
-      <p className="brand">{brand.slice(0, 15)}</p>
+      <p className="brand">{brand}</p>
       <p className="model">{model}</p>
       <div className="image" />
       <div>
@@ -43,10 +53,7 @@ export default function Product({ id, brand, model, sizes, image, price }) {
         <button
           type="button"
           className="delete"
-          onClick={() => {
-            dispatch({ type: SERVER.LOADING });
-            dispatch({ type: PRODUCT.DELETE, payload: id });
-          }}
+          onClick={handleDeletion.bind(null, id)}
         >
           Delete
         </button>

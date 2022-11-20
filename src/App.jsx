@@ -4,12 +4,7 @@ import Navbar from "./components/Navbar";
 import Router from "./routes/Routes";
 import { PRODUCT, SERVER } from "./utils/actions";
 import Spinner from "./components/Spinner";
-import {
-  addProduct,
-  deleteProduct,
-  getProducts,
-  updateProduct,
-} from "./utils/requests";
+import { addProduct, updateProduct } from "./utils/requests";
 const initialState = {
   products: [],
   userLogged: false,
@@ -23,7 +18,8 @@ export const CTX = createContext();
 function reducer(state, action) {
   switch (action.type) {
     case PRODUCT.LOAD_ALL:
-      getProducts(state);
+      state.products = action.payload;
+      sessionStorage.setItem("products", JSON.stringify(action.payload));
       state.loading = false;
       break;
     case PRODUCT.ADD:
@@ -35,7 +31,11 @@ function reducer(state, action) {
       state.loading = false;
       break;
     case PRODUCT.DELETE:
-      deleteProduct(state, action.payload);
+      const index = state.products.findIndex(
+        (prod) => prod.id === action.payload
+      );
+      state.products.splice(index, 1);
+      sessionStorage.setItem("products", JSON.stringify(state.products));
       state.loading = false;
       break;
     case SERVER.ERROR:

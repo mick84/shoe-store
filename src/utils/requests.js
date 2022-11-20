@@ -1,52 +1,26 @@
 import axios from "axios";
 export const baseUrl = "https://6379578b7eb4705cf27eef00.mockapi.io";
 //https://images.pexels.com/photos/10026491/pexels-photo-10026491.png
-export const deleteProduct = async (state, id) => {
-  console.log(`Deleting product with id: ${id}`);
-  const index = state.products.findIndex((prod) => prod.id === id);
-  //console.log(index === -1 ? "No such index!" : "index ", index, "exists");
-  try {
-    await axios.delete(`${baseUrl}/shoes/${id}`);
-    state.products.splice(index, 1);
-    /*
-    //*maybe needed check if there are products
-    if (state.products.length === 0) {
-      sessionStorage.clear();
-      throw new Error("No more products in store!");
-    }*/
-    sessionStorage.setItem("products", JSON.stringify(state.products));
-  } catch ({ message }) {
-    console.error(message);
-    state.error = {
-      status: true,
-      message,
-    };
-  }
-};
-export const getProducts = async (state) => {
-  /*
-  if (state.products.length > 0) {
-    return;
-  }
-*/
+
+export const getProducts = async () => {
   const products = JSON.parse(sessionStorage.getItem("products")) || [];
   if (products.length > 0) {
-    state.products = products;
     console.log("loaded from session storage");
-    return;
+    return products;
   }
   try {
-    console.log("loading products from the server...");
     const { data } = await axios.get(`${baseUrl}/shoes`);
-    state.products = data;
-    sessionStorage.setItem("products", JSON.stringify(data));
-    console.log("loading from the server finished!");
+    return data;
   } catch ({ message }) {
-    console.error(message);
-    state.error = {
-      status: true,
-      message,
-    };
+    throw new Error(message);
+  }
+};
+export const deleteProduct = async (id) => {
+  console.log(`Deleting product with id: ${id}`);
+  try {
+    await axios.delete(`${baseUrl}/shoes/${id}`);
+  } catch ({ message }) {
+    throw new Error(message);
   }
 };
 export const updateProduct = async (state, body) => {

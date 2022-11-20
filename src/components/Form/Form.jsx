@@ -5,9 +5,8 @@ import { PRODUCT, SERVER } from "../../utils/actions";
 export const UserAuthForm = (props) => {
   return <FormLayout className={"user"}>{props.children}</FormLayout>;
 };
-
 export const ProductForm = (props) => {
-  const { dispatch } = useContext(CTX);
+  const { state, dispatch } = useContext(CTX);
   const [inputs, setInputs] = useState({
     brand: props.brand || "",
     model: props.model || "",
@@ -20,7 +19,7 @@ export const ProductForm = (props) => {
       return { ...st };
     });
   }
-  const cleaFields = () => {
+  const clearFields = () => {
     setInputs((st) => {
       if (props.mode !== "editing") {
         st.brand = "";
@@ -44,6 +43,7 @@ export const ProductForm = (props) => {
       body = { ...body, brand, model };
       dispatch({ type: PRODUCT.ADD, payload: body });
     }
+    clearFields();
   };
   return (
     <Container>
@@ -98,12 +98,13 @@ export const ProductForm = (props) => {
           />
         </Container>
         <div className="buttons">
-          <button type="reset" onClick={cleaFields}>
+          <button type="reset" onClick={clearFields}>
             Clear fields
           </button>
-          <button type="submit">Confirm</button>
+          <button type="submit" disabled={state.loading}>
+            Confirm
+          </button>
         </div>
-
         {/* //*later, if possible...
       <Container>
         <label htmlFor="sizes">Sizes: </label>

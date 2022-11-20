@@ -1,12 +1,24 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Container, SpecificProductLayout } from "./layouts";
 import { CTX } from "../App";
 import { ProductForm } from "./Form/Form";
 import { SERVER, PRODUCT } from "../utils/actions";
-export default function SpecificProduct(props) {
+import { deleteProduct } from "../utils/requests";
+export default function SpecificProduct() {
   const { state, dispatch } = useContext(CTX);
   const params = useParams();
+  const goto = useNavigate();
+  async function handleDeletion(id) {
+    try {
+      dispatch({ type: SERVER.LOADING });
+      await deleteProduct(id);
+      dispatch({ type: PRODUCT.DELETE, payload: id });
+      goto("/products");
+    } catch (error) {
+      dispatch({ type: SERVER.ERROR, payload: error });
+    }
+  }
   const index = state.products.findIndex((el) => el.id === params.id);
   const data = state.products[index];
   return (
@@ -41,10 +53,7 @@ export default function SpecificProduct(props) {
           <button
             type="button"
             className="delete"
-            onClick={() => {
-              dispatch({ type: SERVER.LOADING });
-              dispatch({ type: PRODUCT.DELETE, payload: params.id });
-            }}
+            onClick={handleDeletion.bind(null, params.id)}
           >
             Delete
           </button>
