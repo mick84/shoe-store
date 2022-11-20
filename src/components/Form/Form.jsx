@@ -7,7 +7,7 @@ export const UserAuthForm = (props) => {
 };
 
 export const ProductForm = (props) => {
-  const { state, dispatch } = useContext(CTX);
+  const { dispatch } = useContext(CTX);
   const [inputs, setInputs] = useState({
     brand: props.brand || "",
     model: props.model || "",
