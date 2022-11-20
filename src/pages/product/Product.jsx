@@ -1,23 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { ProductLayout } from "../../components/layouts";
-
-export default function Product({
-  id,
-  brand,
-  model,
-  sizes,
-  image,
-  price,
-  onEdit,
-  onDelete,
-}) {
-  //const { id } = useParams();
-  //!get image!
-
+import { CTX } from "../../App";
+import { useContext } from "react";
+import { PRODUCT, SERVER } from "../../utils/actions";
+export default function Product({ id, brand, model, sizes, image, price }) {
+  const goto = useNavigate();
+  const { dispatch } = useContext(CTX);
   return (
     <ProductLayout imageUrl={image}>
       <p className="brand">{brand.slice(0, 15)}</p>
       <p className="model">{model}</p>
-      <div className="image"/>
+      <div className="image" />
       <div>
         Price:&nbsp;
         <span className="price">
@@ -40,13 +33,20 @@ export default function Product({
         </select>
       </div>
       <div className="buttons">
-        <button type="button" className="edit" onClick={onEdit.bind(null, id)}>
+        <button
+          type="button"
+          className="edit"
+          onClick={goto.bind(null, `/products/${id}`)}
+        >
           Edit
         </button>
         <button
           type="button"
           className="delete"
-          onClick={onDelete.bind(null, id)}
+          onClick={() => {
+            dispatch({ type: SERVER.LOADING });
+            dispatch({ type: PRODUCT.DELETE, payload: id });
+          }}
         >
           Delete
         </button>

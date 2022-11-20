@@ -1,0 +1,44 @@
+[
+  {
+    "id": "id",
+    "brand": "brand",
+    "model": "model",
+    "image": "image",
+    "uuid": "$faker.uuid",
+    "price": "price",
+    "sizes": [
+      {
+        "size": 38,
+        "quantity": 3
+      },
+      {
+        "size": 39,
+        "quantity": 4
+      },
+      {
+        "size": 40,
+        "quantity": 1
+      },
+      {
+        "size": 41,
+        "quantity": 2
+      },
+      {
+        "size": 42,
+        "quantity": 5
+      },
+      {
+        "size": 43,
+        "quantity": 6
+      },
+      {
+        "size": 44,
+        "quantity": 4
+      },
+      {
+        "size": 45,
+        "quantity": 2
+      }
+    ]
+  }
+]

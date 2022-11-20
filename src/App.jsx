@@ -1,9 +1,15 @@
 import { useReducer, createContext } from "react";
 import "./App.scss";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Navbar";
 import Router from "./routes/Routes";
 import { PRODUCT, SERVER } from "./utils/actions";
 import Spinner from "./components/Spinner";
+import {
+  addProduct,
+  deleteProduct,
+  getProducts,
+  updateProduct,
+} from "./utils/requests";
 const initialState = {
   products: [],
   userLogged: false,
@@ -17,23 +23,30 @@ export const CTX = createContext();
 function reducer(state, action) {
   switch (action.type) {
     case PRODUCT.LOAD_ALL:
-      state.products = action.payload;
-
+      getProducts(state);
+      state.loading = false;
+      break;
+    case PRODUCT.ADD:
+      addProduct(state, action.payload);
+      state.loading = false;
       break;
     case PRODUCT.EDIT:
-      console.log("editing product with id : ", action.payload);
+      updateProduct(state, action.payload);
+      state.loading = false;
       break;
     case PRODUCT.DELETE:
-      console.log("Deleting product with id : ", action.payload);
+      deleteProduct(state, action.payload);
+      state.loading = false;
       break;
     case SERVER.ERROR:
       state.error = {
         status: true,
         message: action.payload,
       };
+      state.loading = false;
       break;
-    case SERVER.TOGGLE_SPINNER:
-      state.loading = !state.loading;
+    case SERVER.LOADING:
+      state.loading = true;
       break;
     default:
       break;

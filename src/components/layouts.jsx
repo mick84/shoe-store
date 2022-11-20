@@ -28,16 +28,46 @@ export const Card = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+  border-radius: 0.5rem;
+  width: fit-content;
 `;
-export const FormLayout = Card.withComponent("form");
+const form = Card.withComponent("form");
+export const FormLayout = styled(form)`
+  background-color: #295055;
+
+  .form-title {
+    color: white;
+    font-size: 1.2rem;
+  }
+  input {
+    padding: 0.25rem 1rem;
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    button {
+      color: #d3cbda;
+      padding: 0.5rem 1rem;
+      border: none;
+      //font-weight: bold;
+      font-size: 1.1rem;
+      &[type="reset"] {
+        background-color: #303021;
+      }
+      &[type="submit"] {
+        background-color: #0a2c07;
+      }
+    }
+  }
+`;
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  background-color: burlywood;
+  align-items: flex-start;
+  justify-content: center;
+  background: ${(props) => props.background || "burlywood"};
 `;
 export const SpinnerBlock = styled.div`
   position: absolute;
@@ -50,8 +80,8 @@ export const SpinnerBlock = styled.div`
   height: 8rem;
   border-radius: 50%;
   background-image: linear-gradient(green 20%, violet 80%);
-  mix-blend-mode: overlay;
-  background-blend-mode: screen;
+  //mix-blend-mode: overlay;
+  //background-blend-mode: screen;
   @keyframes spinning {
     to {
       transform: rotate(1turn);
@@ -62,7 +92,7 @@ export const SpinnerBlock = styled.div`
     border-radius: 50%;
     width: 7rem;
     height: 7rem;
-    background-color: transparent;
+    background-color: navy;
     margin: auto;
     z-index: -2;
   }
@@ -70,14 +100,14 @@ export const SpinnerBlock = styled.div`
 export const ProductLayout = styled(Card)`
   background-color: ${(props) => props.adminMode || "lightblue"};
   font-weight: bold;
-  width: 15rem;
+  width: 20rem;
   .brand {
     font-size: large;
     font-style: italic;
     color: #0f6d7e;
   }
   .image {
-    background-image: url(${(props) => props.imageUrl});
+    background-image: ${(props) => `url(${props.imageUrl})`};
     height: 15rem;
     width: 100%;
     background-size: cover;
@@ -105,5 +135,15 @@ export const ProductLayout = styled(Card)`
         background-color: #c95919;
       }
     }
+  }
+`;
+export const SpecificProductLayout = styled(ProductLayout)`
+  width: ${(props) => props.width || "30rem"};
+  .image {
+    height: 30rem;
+  }
+  .buttons {
+    justify-content: center;
+    gap: 2rem;
   }
 `;

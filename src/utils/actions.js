@@ -12,6 +12,6 @@ export const USER = {
   DELETE: "delete user",
 };
 export const SERVER = {
-  TOGGLE_SPINNER: "toggle spinner",
+  LOADING: "loading",
   ERROR: "show error",
 };

@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { NavLayout } from "../layouts";
-import { CTX } from "../../App";
+import { NavLayout } from "./layouts";
+import { CTX } from "../App";
 import { useContext } from "react";
 export default function Navbar(props) {
-  const { state, dispatch } = useContext(CTX);
+  const { state } = useContext(CTX);
   return (
     <NavLayout className={state.userLogged ? "logged" : ""}>
       <ul id="pages-menu">
@@ -15,6 +15,11 @@ export default function Navbar(props) {
         <li>
           <NavLink className="nav-link" to="/products">
             Products
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className="nav-link" to="/add-product/">
+            Add Product
           </NavLink>
         </li>
       </ul>
